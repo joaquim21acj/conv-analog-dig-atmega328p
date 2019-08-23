@@ -2,8 +2,11 @@
 #include <stdint.h>
 
 void adc_init(int freq){
+  /*Passar o pino para configurar na inicialização */
     ADMUX |= (1<<REFS0);
     /*Configurar o valor de referência do clock */
+    //set prescaller to 128 and enable ADC 
+    ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)|(1<<ADEN);  
 }
 
 float read_Level(int pin_int){
