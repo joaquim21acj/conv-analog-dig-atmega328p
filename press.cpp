@@ -1,28 +1,43 @@
 #include <avr/io.h>
 #include <stdint.h>
+
+void adc_init(int freq){
+    ADMUX |= (1<<REFS0);
+    /*Configurar o valor de referência do clock */
+}
+
+float read_Level(int pin_int){
 /* 
  * Definição do pino de leitura
  */
-#define ADC_PIN			0
-
-float Read_Level(){
-    float nivel_analogico = adc_read(uint8_t pin)
+    int ok = -1;
+    for(int i=0; i<8; i++){
+        if (pin_int == i){
+          ok = 1;
+        }
+      }
+    if (ok == -1){
+        return float(ok)
+    }
+    uint8_t pin = (uint8_t)pin_int;
+    float nivel_analogico = adc_read(uint8_t pin);
     
     /*Cálculo feito no momento da leitura para 
     * maior precisão do dado coletado
     * mesmo após conversão para valores entre 0.00 e 1.00 */
-    float multiplicador = float(100)/float(1023)
+    float multiplicador = float(100)/float(1023);
 
     /*Gerador dos valores entre 0.00 e 1.00 */
-    nivel_analogico = (multiplicador * nivel_analogico)
+    float nivel_digital = (multiplicador * nivel_analogico);
+    return nivel_digital;
+
 }
 
 /*Retorna o valor entre 0 e 1023 */
 uint16_t adc_read(uint8_t pin) {
     /*pin = pino usado para a leitura */
-
-	ADMUX &= 0xf0;
-	ADMUX |= adcx;
+  /*Seleção de  */
+	ADMUX = (ADMUX & 0xF0) | (pin & 0x0F);
 
 	/* Conversão */
 	ADCSRA |= _BV(ADSC);
